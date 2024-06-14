@@ -1,0 +1,182 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// Hero Section model
+model HeroSection {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  buttonText  String
+}
+
+model MissionSection {
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  missionTitle String
+  missionText  String
+  visionText   String
+  sectionImage String
+}
+
+model ServiceSection {
+  id                  String @id @default(auto()) @map("_id") @db.ObjectId
+  serviceSectionTitle String
+}
+
+model ServiceCards {
+  id                 String   @id @default(auto()) @map("_id") @db.ObjectId
+  serviceName        String
+  serviceDescription String
+  serviceImage       String
+  redirectTo         String   @default("/")
+  createdAt          DateTime @default(now())
+}
+
+model ProductSection {
+  id                  String @id @default(auto()) @map("_id") @db.ObjectId
+  productSectionTitle String
+}
+
+model ProductsCards {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  image       String
+  category    String
+  icons       String
+  color       String
+  createdAt   DateTime @default(now())
+}
+
+model ProductCategories {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  createdAt DateTime @default(now())
+}
+
+model Blogs {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  details     String   @default("details")
+  image       String
+  isFeatured  Boolean  @default(false)
+  tag         Tags     @relation(fields: [tagsId], references: [id])
+  createdAt   DateTime @default(now())
+  tagsId      String   @db.ObjectId
+}
+
+model Tags {
+  id    String  @id @default(auto()) @map("_id") @db.ObjectId
+  name  String
+  Blogs Blogs[]
+}
+
+model CareerPage {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
+  RTDescription String
+  buttonText    String
+  createdAt     DateTime @default(now())
+}
+
+model CareerSection {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  button1Text String
+  button2Text String
+  createdAt   DateTime @default(now())
+}
+
+model OriginTestimonials {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  role            String
+  testimonialDesc String
+  image           String
+  createdAt       DateTime @default(now())
+}
+
+model FAQSection {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  title String
+}
+
+model FAQs {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  question  String
+  answer    String
+  createdAt DateTime @default(now())
+}
+
+model OurTeam {
+  id                         String            @id @default(auto()) @map("_id") @db.ObjectId
+  fullName                   String
+  role                       String
+  profileImage               String
+  bannerImage                String
+  description                String
+  professionalQualifications String
+  certificationQualification String
+  hobbies                    String
+  meansToYou                 String
+  testimonials               TeamTestimonial[]
+  createdAt                  DateTime          @default(now())
+}
+
+model TeamTestimonial {
+  id          String            @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  role        String
+  description String
+  rating      Int
+  status      TestimonialStatus @default(pending)
+  ourTeam     OurTeam?          @relation(fields: [ourTeamId], references: [id], onDelete: Cascade)
+  ourTeamId   String            @map("_ourTeamId") @db.ObjectId
+  createdAt   DateTime          @default(now())
+}
+
+model Events {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  bannerImage String
+  title       String
+  description String
+  dateOfEvent String
+  location    String
+  createdAt   DateTime @default(now())
+}
+
+model WhyUsCards {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  icon        String
+  title       String
+  color       String
+  description String
+  redirectTo  String
+  createdAt   DateTime @default(now())
+}
+
+model AdminLogin {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  email    String
+  password String
+}
+
+enum TestimonialStatus {
+  pending
+  rejected
+  approved
+}
