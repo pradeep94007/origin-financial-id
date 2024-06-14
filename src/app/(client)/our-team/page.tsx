@@ -9,6 +9,8 @@ import { Suspense, useEffect, useState } from "react";
 import LoadingSkeleton from "../../loading";
 import getData from "@/app/utils/getData";
 import { useFetchDataOnClient } from "../../../../utils/useFetchDataOnClient";
+import { useSearchParams, useRouter } from "next/navigation";
+import TeamSkeleton from "@/components/TeamSkeleton";
 type Props = {};
 
 const doctorsss = [
@@ -80,10 +82,60 @@ const doctorsss = [
     role: "Senior advisor",
   },
 ];
-
 const page = (props: Props) => {
+
+
   const [selectedUser, setSelectedUser] = useState<any>(null);
-  const doctors = useFetchDataOnClient("ourteam");
+  const [doctors, setDoctors] = useState<any>(null);
+  // const doctors =  
+  const router = useRouter()
+  const searchParams = useSearchParams();
+  // const doctors = useFetchDataOnClient("ourteam")
+
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`/api/ourteam`);
+      const data = await response.json();
+      if (!response.ok)
+        throw new Error(
+          data.error
+            ? data.error
+            : `Something went wrong\nError at fetching ourteam`
+        );
+      setDoctors(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  // useEffect(() => {
+  //   const id = searchParams.get('id');
+  //   if (id && doctors.length > 0) {
+  //     const doctor = doctors.find((doc: any) => doc.id === id);
+  //     console.log(doctor);
+  //     setSelectedUser(doctor);
+  //   }
+  // }, [searchParams, doctors]);
+
+  const handleCardClick = (info: any) => {
+    setSelectedUser(info);
+    router.push(`/our-team?id=${info.id}`);
+  };
+
+
+
+
+  // const handleCloseSidebar = () => {
+  //   console.log("sidebar close");
+
+  //   setSelectedUser(null);
+  //   router.push('/our-team');
+  // };
 
   return (
     <>
@@ -95,11 +147,12 @@ const page = (props: Props) => {
               Meet the team
             </h1>
           </div>
-          <SlideInFromLeft className="grid grid-cols-2 lg:grid-cols-4 max-screen md:grid-cols-3 gap-7 lg:gap-y-24 md:gap-y-16 my-10 mt-5 ">
-            {doctors &&
-              doctors.map((info: any) => (
-                <div key={info.fullName} onClick={() => setSelectedUser(info)}>
-                  <TeamDeatils team={selectedUser}>
+          {!doctors ? (<TeamSkeleton />)
+
+            : (<SlideInFromLeft className="grid grid-cols-2 lg:grid-cols-4 max-screen md:grid-cols-3 gap-7 lg:gap-y-24 md:gap-y-16 my-10 mt-5 ">
+              {doctors && doctors.map((info: any) => (
+                <div key={info.fullName} onClick={() => handleCardClick(info)}>
+                  <TeamDeatils team={selectedUser}  >
                     {/* Aspect square cuts the image in 1/2 */}
                     <div className="max-w-[250px] md:max-w-[250px] lg:max-w-none aspect-square overflow-hidden rounded-md">
                       <Suspense fallback={<LoadingSkeleton />}>
@@ -123,12 +176,15 @@ const page = (props: Props) => {
                   </TeamDeatils>
                 </div>
               ))}
-          </SlideInFromLeft>
+            </SlideInFromLeft>)
+
+          }
+
           <div className="my-10 text-center flex justify-center items-center w-full">
             <Button>Load more</Button>
           </div>
         </div>
-      </div>
+      </div >
     </>
   );
 };

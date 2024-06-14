@@ -29,13 +29,16 @@ type props = {
 export default function TeamDeatils({ team, children }: any) {
   const capsName =
     team?.fullName.charAt(0).toUpperCase() + team?.fullName.slice(1);
+  console.log("TEAM CALL", team);
+
+
   return (
     <>
-      <Sheet>
+      <Sheet >
         <SheetTrigger>{children}</SheetTrigger>
-        <SheetClose></SheetClose>
+        <SheetClose ></SheetClose>
         <SheetContent className="overflow-y-auto overflow-x-hidden">
-          <section>
+          <section >
             <div>
               <Suspense fallback={<LoadingSkeleton />}>
                 <Image
@@ -47,6 +50,7 @@ export default function TeamDeatils({ team, children }: any) {
                   alt="career-image"
                   className="max-h-[350px] object-cover object-top rounded-t-md w-full"
                 />
+
               </Suspense>
             </div>
             <div className="my-5 lg:p-10 p-5">
@@ -94,7 +98,7 @@ export default function TeamDeatils({ team, children }: any) {
             />
           </div>
           <div>
-            <FeedbackForm animate={true} name={capsName} teamId={team?.id} />
+            {/* <FeedbackForm animate={true} name={capsName} teamId={team?.id} /> */}
           </div>
         </SheetContent>
       </Sheet>
