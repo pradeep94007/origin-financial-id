@@ -1,6 +1,7 @@
 import { cTestimonials } from "@/app/Constants"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/carousel"
 import { Card, CardContent } from "./ui/card"
+import Link from "next/link"
 
 type Props = {}
 
@@ -18,17 +19,20 @@ const TestimonialSection = (props: Props) => {
                 key={index}
                 className=" lg:max-w-[50%] md:max-w-[75%] flex w-full "
               >
-                <div key={index} className='flex md:min-h-[300px] min-h-[250px] w-full'>
-                  <Card className='card bg-yellow flex  flex-grow rounded-2xl relative'>
-                    <CardContent className='flex flex-col mx-5  h-full justify-between p-5 space-y-8'>
-                      <h1 className='font-semibold text-3xl'>{item.title}</h1>
-                      <span className="text-slate-500" >{item.quote} </span>
-                      <div className="mt-auto">
-                        <span className="font-semibold text-slate-600 ">{item.name}</span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
+                <Link href={"/"} key={index}>
+                  <div className='flex md:min-h-[300px] min-h-[250px] w-full '>
+                    <Card className='card bg-yellow  flex  flex-grow rounded-2xl relative hover:bg-slate-100 transition'>
+                      <CardContent className='flex flex-col mx-5  h-full justify-between p-5 space-y-8'>
+                        <h1 className='font-semibold text-3xl'>{item.title}</h1>
+                        <span className="text-slate-500" >{item.quote} </span>
+                        <div className="mt-auto">
+                          <span className="font-semibold text-slate-600 ">{item.name}</span>
+                        </div>
+
+                      </CardContent>
+                    </Card>
+                  </div>
+                </Link>
               </CarouselItem>
             ))}
 
