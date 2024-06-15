@@ -7,7 +7,7 @@ export default function ReviewItems({ data }: any) {
         {Array(data?.rating)
           .fill(data?.rating)
           .map((i, idx) => {
-            return <FaStar className="text-purple" />;
+            return <FaStar key={idx} className="text-purple" />;
           })}
       </div>
       <p className="text-dark text-md mt-4 min-h-[140px]">

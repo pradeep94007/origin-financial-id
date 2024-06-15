@@ -68,14 +68,14 @@ const SheetContent = React.forwardRef<
       {...props}
     >
       {children}
-      <SheetPrimitive.Close title="Close" className="fixed z-50 top-4 right-8 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
+      {/* <SheetPrimitive.Close title="Close" className="fixed z-50 top-4 right-8 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
         <MagneticButton>
-          <Button title="Close" className="w-16 h-16 flex shadow-none rounded-full justify-center items-center">
+          <Button  title="Close" className="w-16 h-16 flex shadow-none rounded-full justify-center items-center">
             <X />
           </Button>
         </MagneticButton>
         <span className="sr-only">Close</span>
-      </SheetPrimitive.Close>
+      </SheetPrimitive.Close> */}
     </SheetPrimitive.Content>
   </SheetPortal>
 ))

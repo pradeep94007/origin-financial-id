@@ -5,36 +5,45 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import * as SheetPrimitive from "@radix-ui/react-dialog"
+
 import Image from "next/image";
-import { ReactNode, Suspense } from "react";
+import { ReactNode, Suspense, useRef } from "react";
 import Testimonials from "./(testimonials)/Testimonials";
 import FeedbackForm from "./FeedbackForm";
+import { X } from "lucide-react"
+// import { Button } from "./button"
+import { Button } from "./ui/button";
+import MagneticButton from "./MagneticButton";
+// import MagneticButton from "../MagneticButton"
+
 
 type props = {
   team: {
+    id: string;
     fullName: string;
     expert: string;
-    img: string;
-    professional_qualifications: string[];
-    Certification_Qulaifications: string[];
-    Hobbies: string[];
-    about_yourself: string;
-    meaning: string;
+    bannerImage: string;
+    professionalQualifications: string[];
+    certificationQualification: string[];
+    hobbies: string[];
+    description: string;
+    meansToYou: string;
     role: string;
     testimonials: any[];
   };
+  onClose: () => void;
   children: ReactNode;
 };
 
-export default function TeamDeatils({ team, children }: any) {
+export default function TeamDeatils({ team, onClose, children }: props) {
   const capsName =
     team?.fullName.charAt(0).toUpperCase() + team?.fullName.slice(1);
   console.log("TEAM CALL", team);
 
-
   return (
     <>
-      <Sheet >
+      <Sheet open={team !== null}>
         <SheetTrigger>{children}</SheetTrigger>
         <SheetClose ></SheetClose>
         <SheetContent className="overflow-y-auto overflow-x-hidden">
@@ -43,7 +52,7 @@ export default function TeamDeatils({ team, children }: any) {
               <Suspense fallback={<LoadingSkeleton />}>
                 <Image
                   draggable={false}
-                  src={team?.bannerImage}
+                  src={team?.bannerImage || "/Assets/Team-Image/team1.png"}
                   priority
                   width={1200}
                   height={500}
@@ -100,6 +109,16 @@ export default function TeamDeatils({ team, children }: any) {
           <div>
             {/* <FeedbackForm animate={true} name={capsName} teamId={team?.id} /> */}
           </div>
+          <SheetPrimitive.Close title="Close" className="fixed z-50 top-4 right-8 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
+            <MagneticButton>
+
+              <Button onClick={onClose} title="Close" className="w-16 h-16 flex shadow-none rounded-full justify-center items-center">
+                <X />
+              </Button>
+
+            </MagneticButton>
+            <span className="sr-only">Close</span>
+          </SheetPrimitive.Close>
         </SheetContent>
       </Sheet>
     </>
